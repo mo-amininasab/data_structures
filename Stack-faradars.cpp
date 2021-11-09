@@ -63,11 +63,21 @@ int main() {
   stack1.push(48);
   stack1.push(43);
   stack1.push(28);
-  stack1.push(23);
-  stack1.push(1);
 
-  cout << "Stack after pushing 2, 32, 48, 43, 28, 23, 1:" << endl
-       << stack1 << endl;
+  // cout << stack1 << endl;
+
+  // stack1.pop();
+
+  // cout << stack1 << endl;
+
+  while (!stack1.is_empty()) {
+    cout << stack1.pop() << endl;
+  }
+  {
+    /* code */
+  }
+  
+ 
 
   return 0;
 }
