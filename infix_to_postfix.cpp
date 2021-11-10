@@ -1,5 +1,5 @@
-#include <string>
 #include <iostream>
+#include <string>
 using namespace std;
 
 template <class T>
@@ -26,15 +26,6 @@ class Stack {
 
     stack_ptr = new T[capacity];
   }
-  // Stack(const Stack& obj) {
-  //   top = obj.top;
-  //   capacity = obj.capacity;
-
-  //   stack_ptr = new T[capacity];
-  //   while (!is_empty()) {
-  //     obj.push(obj.pop());
-  //   }
-  //   }
   ~Stack() { delete[] stack_ptr; }
 
   const Stack& operator=(const Stack& stk) {
@@ -49,24 +40,6 @@ class Stack {
     }
     return *this;
   }
-
-  // Stack operator+(const Stack& stk) {
-  //   Stack temp(capacity + stk.capacity);
-  //   for (int i = 0; i <= top; i++) {
-  //     temp.stack_ptr[i] = stack_ptr[i];
-  //   }
-
-  //   for (int i = 0; i <= stk.top; i++) {
-  //     temp.stack_ptr[i + top + 1] = stk.stack_ptr[i];
-  //   }
-  //   // while (!is_empty()) {
-  //   //   temp.push(pop());
-  //   // }
-  //   // while (!stk.is_empty()) {
-  //   //   temp.push(stk.pop());
-  //   // }
-  //   return temp;
-  // }
 
   bool push(const T& item) {
     if (is_full()) {
@@ -125,95 +98,88 @@ Stack<char> infix_to_postfix(const string expression) {
     switch (expression[i]) {
       case '(':
 
-        {
-        cout << "Test--------" << endl;
+      {
+        Stack<char> temp(10);
+        temp = infix_to_postfix(expression.substr(i + 1, length));
 
-          // Stack<char> temp(length - i - 1);
-          Stack<char> temp(10);
-          // cout << "SUBSTR: " << expression.substr(i + 1, length) << endl;
-          temp = infix_to_postfix(expression.substr(i + 1, length));
-          // cout << "TEMP STR: " << temp.get_str() << ";;;" << endl;
-          // cout << "TEMP STR: " << result.get_str() << ";;;" << endl;
-          string str = temp.get_str();
-          for (int j = 0; j < str.length(); j++) {
-            result.push(str[j]);
-          }
-          cout << "i BEFORE: " << i << endl;
+        string str = temp.get_str();
+        for (int j = 0; j < str.length(); j++) {
+          result.push(str[j]);
+        }
 
-          i = str.length() + i + 1;
-          // if (i == 19) i = 14;
-          // cout << "TEMP SIZE: " << i << endl;
-          cout << "RESULT STR: " << result.get_str() << ";;;" << endl;
-          // cout << "RESULT LENGTH: " << result.get_size() << ";;;" << endl;
-          // cout << "str LENGTH: " << str.length() << ";;;" << endl;
-          cout << "str : " << str << ";;;" << endl;
-          // cout << "EXPRESSION: " << expression << endl;
-          cout << "i AFTER: " << i << endl;
-          // cout << "EXPRESSION[i]: " << expression[i] << endl;
-          cout << "EXPRESSION: " << expression << endl;
+        i = str.length() + i + 1;
 
-        // operators.push(expression[i]);
-        // cout << "Test--------" << endl;
-        // cout << expression.substr(i + 1, length) << endl;
-        // cout << endl << "Test--------" << endl;
-        cout << "Test--------" << endl;
-        
-        break;}
-      case ')':
-      // cout << "------------------------------------" << endl;
-      // cout << "EXPRESSION: " << expression;
-  
-
-      while(!operators.is_empty()) {
-        char a = operators.pop();
-        result.push(a);
+        break;
       }
-      //   cout << endl << "RESULT: " << result ;
-      // cout << endl << "------------------------------------" << endl;
-        
+      case ')':
+
+        while (!operators.is_empty()) {
+          char a = operators.pop();
+          result.push(a);
+        }
         return result;
         break;
-      case '^':
-        while (operators.peak() == '^') {
+      case '^': {
+        char last_operator = operators.peak();
+        while (last_operator == '^') {
           char a = operators.pop();
           result.push(a);
+
+          last_operator = operators.peak();
         }
         operators.push(expression[i]);
         break;
-      case '*':
+      }
+      case '*': {
+        char last_operator = operators.peak();
+        while (last_operator == '^' || last_operator == '*' ||
+               last_operator == '/') {
+          char a = operators.pop();
+          result.push(a);
+
+          last_operator = operators.peak();
+        }
+        operators.push(expression[i]);
+        break;
+      }
+      case '/': {
+        char last_operator = operators.peak();
         while (operators.peak() == '^' || operators.peak() == '*' ||
                operators.peak() == '/') {
           char a = operators.pop();
           result.push(a);
+
+          last_operator = operators.peak();
         }
         operators.push(expression[i]);
         break;
-      case '/':
-        while (operators.peak() == '^' || operators.peak() == '*' ||
-               operators.peak() == '/') {
-          char a = operators.pop();
-          result.push(a);
-        }
-        operators.push(expression[i]);
-        break;
-      case '+':
+      }
+      case '+': {
+        char last_operator = operators.peak();
         while (operators.peak() == '^' || operators.peak() == '*' ||
                operators.peak() == '/' || operators.peak() == '-' ||
                operators.peak() == '+') {
           char a = operators.pop();
           result.push(a);
+
+          last_operator = operators.peak();
         }
         operators.push(expression[i]);
         break;
-      case '-':
+      }
+      case '-': {
+        char last_operator = operators.peak();
         while (operators.peak() == '^' || operators.peak() == '*' ||
                operators.peak() == '/' || operators.peak() == '-' ||
                operators.peak() == '+') {
           char a = operators.pop();
           result.push(a);
+
+          last_operator = operators.peak();
         }
         operators.push(expression[i]);
         break;
+      }
 
       default:
         result.push(expression[i]);
@@ -228,6 +194,4 @@ Stack<char> infix_to_postfix(const string expression) {
   return result;
 }
 
-int main() {
-  cout << infix_to_postfix("a+b*(c^(d*e^f)+(g^h))").get_str() << endl;
-}
+int main() { cout << infix_to_postfix("A^(B+C)-A/D*E").get_str() << endl; }
