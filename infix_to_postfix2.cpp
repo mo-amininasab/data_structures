@@ -3,8 +3,10 @@
 // *  Student No.: 39911541054532     *
 // ************************************
 
-#include <iostream>
+#include <math.h>
+
 #include <cstring>
+#include <iostream>
 using namespace std;
 
 template <class T>
@@ -70,6 +72,11 @@ class Stack {
     return stack_ptr[top];
   }
 
+  char* to_string() {
+    char* str = new char[capacity];
+    
+  }
+
   bool is_empty() const { return (top == -1); }
   bool is_full() const { return top == capacity - 1; }
 
@@ -99,13 +106,15 @@ bool is_operand(char ch) {
   return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
 }
 
+bool is_digit(char ch) { return (ch >= '0' && ch <= '9'); }
+
 Stack<char> infix_to_postfix(const char* expression) {
   int length = strlen(expression);
   Stack<char> operators(length);
   Stack<char> result(length + 5);  // +5 just to be safe
 
   for (int i = 0; i < length; i++) {
-    if (is_operand(expression[i])) {  // if operand
+    if (is_operand(expression[i]) || is_digit(expression[i])) {  // if operand
       result.push(expression[i]);
 
     } else if (expression[i] == '(') {
@@ -123,7 +132,7 @@ Stack<char> infix_to_postfix(const char* expression) {
              prec(expression[i]) <= prec(operators.peak())) {
         result.push(operators.pop());
       }
-      
+
       operators.push(expression[i]);
     }
   }
@@ -135,30 +144,80 @@ Stack<char> infix_to_postfix(const char* expression) {
   return result;
 }
 
+float evaluate(const char* expression) {
+  int length = strlen(expression);
+  Stack<char> stk(length);
+
+  for (int i = 0; i < length; i++) {
+    switch (expression[i]) {
+      case '+': {
+        int b = stk.pop();
+        int a = stk.pop();
+        stk.push(a + b);
+        break;
+      }
+      case '-': {
+        int b = stk.pop();
+        int a = stk.pop();
+        stk.push(a - b);
+        break;
+      }
+      case '*': {
+        int b = stk.pop();
+        int a = stk.pop();
+        stk.push(a * b);
+        break;
+      }
+      case '/': {
+        int b = stk.pop();
+        int a = stk.pop();
+        stk.push(a / b);
+        break;
+      }
+      case '^': {
+        int b = stk.pop();
+        int a = stk.pop();
+        stk.push(pow(a, b));
+        break;
+      }
+      default:
+        stk.push(expression[i] - '0');
+        break;
+    }
+  }
+
+  return stk.pop();
+}
+
 int main() {
-  string expression1 = "(a+b)*(c+d)";
+  string expression1 = "(1+2)*(3+4)";
   cout << expression1 << "  --->  ";
-  cout << infix_to_postfix("(a+b)*(c+d)") << endl;
+  cout << infix_to_postfix("(1+2)*(3+4)") << endl;
+  cout << infix_to_postfix("(1+2)*(3+4)").to_string() << endl;
+  // cout << evaluate("12+34+*") << endl;
+  // cout << ('1' - '0') + ('2' - '0') << endl;
 
-  string expression2 = "a+(b*c^d)^(e-f)/g";
-  cout << expression2 << "  --->  ";
-  cout << infix_to_postfix("a+(b*c^d)^(e-f)/g") << endl;
+  // string expression2 = "1+(2*3^4)^(5-6)/7";
+  // cout << expression2 << "  --->  ";
+  // cout << infix_to_postfix("1+(2*3^4)^(5-6)/7") << endl;
 
-  string expression3 = "a^(b+c)-a/d*e";
-  cout << expression3 << "  --->  ";
-  cout << infix_to_postfix("a^(b+c)-a/d*e") << endl;
+  // string expression3 = "a^(b+c)-a/d*e";
+  // cout << expression3 << "  --->  ";
+  // cout << infix_to_postfix("a^(b+c)-a/d*e") << endl;
 
-  string expression4 = "a+b^c*d";
-  cout << expression4 << "  --->  ";
-  cout << infix_to_postfix("a+b^c*d") << endl;
+  // string expression4 = "a+b^c*d";
+  // cout << expression4 << "  --->  ";
+  // cout << infix_to_postfix("a+b^c*d") << endl;
 
-  string expression5 = "a+b/(c*d+e)-f^g";
-  cout << expression5 << "  --->  ";
-  cout << infix_to_postfix("a+b/(c*d+e)-f^g") << endl;
+  // string expression5 = "a+b/(c*d+e)-f^g";
+  // cout << expression5 << "  --->  ";
+  // cout << infix_to_postfix("a+b/(c*d+e)-f^g") << endl;
 
-  string expression6 = "(a+b)+(c*d^(e-f/(g^h)))";
-  cout << expression6 << "  --->  ";
-  cout << infix_to_postfix("(a+b)+(c*d^(e-f/(g^h)))") << endl;
+  // string expression6 = "(a+b)+(c*d^(e-f/(g^h)))";
+  // cout << expression6 << "  --->  ";
+  // cout << infix_to_postfix("(a+b)+(c*d^(e-f/(g^h)))") << endl;
+
+  // cout << '3' - '0';
 
   return 0;
 }
