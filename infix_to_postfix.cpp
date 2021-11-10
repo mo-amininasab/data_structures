@@ -229,5 +229,5 @@ Stack<char> infix_to_postfix(const string expression) {
 }
 
 int main() {
-  cout << infix_to_postfix("a+b*(c^(d+e))").get_str() << endl;
+  cout << infix_to_postfix("a+b*(c^(d*e^f)+(g^h))").get_str() << endl;
 }
