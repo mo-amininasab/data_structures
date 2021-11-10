@@ -126,6 +126,8 @@ Stack<char> infix_to_postfix(const string expression) {
       case '(':
 
         {
+        cout << "Test--------" << endl;
+
           // Stack<char> temp(length - i - 1);
           Stack<char> temp(10);
           // cout << "SUBSTR: " << expression.substr(i + 1, length) << endl;
@@ -136,21 +138,26 @@ Stack<char> infix_to_postfix(const string expression) {
           for (int j = 0; j < str.length(); j++) {
             result.push(str[j]);
           }
-          i = result.get_size() + i + 2;
+          cout << "i BEFORE: " << i << endl;
+
+          i = str.length() + i + 1;
+          // if (i == 19) i = 14;
           // cout << "TEMP SIZE: " << i << endl;
-          // cout << "RESULT STR: " << result.get_str() << ";;;" << endl;
+          cout << "RESULT STR: " << result.get_str() << ";;;" << endl;
           // cout << "RESULT LENGTH: " << result.get_size() << ";;;" << endl;
           // cout << "str LENGTH: " << str.length() << ";;;" << endl;
-          // cout << "str : " << str << ";;;" << endl;
+          cout << "str : " << str << ";;;" << endl;
           // cout << "EXPRESSION: " << expression << endl;
-          // cout << "i: " << i << endl;
+          cout << "i AFTER: " << i << endl;
           // cout << "EXPRESSION[i]: " << expression[i] << endl;
-          // cout << "EXPRESSION: " << expression << endl;
+          cout << "EXPRESSION: " << expression << endl;
 
         // operators.push(expression[i]);
         // cout << "Test--------" << endl;
         // cout << expression.substr(i + 1, length) << endl;
         // cout << endl << "Test--------" << endl;
+        cout << "Test--------" << endl;
+        
         break;}
       case ')':
       // cout << "------------------------------------" << endl;
@@ -222,5 +229,5 @@ Stack<char> infix_to_postfix(const string expression) {
 }
 
 int main() {
-  cout << infix_to_postfix("a+(b*c^d)^(e-f)/g");
+  cout << infix_to_postfix("a+b*(c^(d+e))").get_str() << endl;
 }
