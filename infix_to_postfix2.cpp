@@ -4,7 +4,6 @@
 // ************************************
 
 #include <math.h>
-
 #include <cstring>
 #include <iostream>
 using namespace std;
@@ -21,7 +20,6 @@ class Stack {
     for (int i = 0; i <= obj.top; i++) {
       out << obj.stack_ptr[i] << "";
     }
-    out << endl;
 
     return out;
   }
@@ -73,8 +71,15 @@ class Stack {
   }
 
   char* to_string() {
-    char* str = new char[capacity];
-    
+    if (is_empty()) {
+      return nullptr;
+    }
+
+    char* str = new char[top + 1];
+    for (int i = 0; i <= top; i++) str[i] = stack_ptr[i];
+
+    str[top + 1] = '\0';
+    return str;
   }
 
   bool is_empty() const { return (top == -1); }
@@ -146,43 +151,35 @@ Stack<char> infix_to_postfix(const char* expression) {
 
 float evaluate(const char* expression) {
   int length = strlen(expression);
-  Stack<char> stk(length);
+  Stack<float> stk(length);
 
   for (int i = 0; i < length; i++) {
-    switch (expression[i]) {
-      case '+': {
-        int b = stk.pop();
-        int a = stk.pop();
-        stk.push(a + b);
-        break;
+    if (is_digit(expression[i])) {  // if digit
+      stk.push(expression[i] - '0');
+    } else {  // if operator
+      float b = stk.pop();
+      float a = stk.pop();
+      switch (expression[i]) {
+        case '+':
+          stk.push(a + b);
+          break;
+
+        case '-':
+          stk.push(a - b);
+          break;
+
+        case '*':
+          stk.push(a * b);
+          break;
+
+        case '/':
+          stk.push(a / b);
+          break;
+
+        case '^':
+          stk.push(pow(a, b));
+          break;
       }
-      case '-': {
-        int b = stk.pop();
-        int a = stk.pop();
-        stk.push(a - b);
-        break;
-      }
-      case '*': {
-        int b = stk.pop();
-        int a = stk.pop();
-        stk.push(a * b);
-        break;
-      }
-      case '/': {
-        int b = stk.pop();
-        int a = stk.pop();
-        stk.push(a / b);
-        break;
-      }
-      case '^': {
-        int b = stk.pop();
-        int a = stk.pop();
-        stk.push(pow(a, b));
-        break;
-      }
-      default:
-        stk.push(expression[i] - '0');
-        break;
     }
   }
 
@@ -190,34 +187,47 @@ float evaluate(const char* expression) {
 }
 
 int main() {
-  string expression1 = "(1+2)*(3+4)";
-  cout << expression1 << "  --->  ";
-  cout << infix_to_postfix("(1+2)*(3+4)") << endl;
-  cout << infix_to_postfix("(1+2)*(3+4)").to_string() << endl;
-  // cout << evaluate("12+34+*") << endl;
-  // cout << ('1' - '0') + ('2' - '0') << endl;
+  char* expression1 = "(1+2)*(3+4)";
+  Stack<char> postfix1 = infix_to_postfix(expression1);
+  cout << expression1 << "  --->  " << postfix1 << "  --->  "
+       << evaluate(postfix1.to_string()) << endl
+       << endl;
 
-  // string expression2 = "1+(2*3^4)^(5-6)/7";
-  // cout << expression2 << "  --->  ";
-  // cout << infix_to_postfix("1+(2*3^4)^(5-6)/7") << endl;
+  char* expression2 = "3+5*(8-2)";
+  Stack<char> postfix2 = infix_to_postfix(expression2);
+  cout << expression2 << "  --->  " << postfix2 << "  --->  "
+       << evaluate(postfix2.to_string()) << endl
+       << endl;
 
-  // string expression3 = "a^(b+c)-a/d*e";
-  // cout << expression3 << "  --->  ";
-  // cout << infix_to_postfix("a^(b+c)-a/d*e") << endl;
+  char* expression3 = "1+(2*3^4)^(5-6)/7";
+  Stack<char> postfix3 = infix_to_postfix(expression3);
+  cout << expression3 << "  --->  " << postfix3 << "  --->  "
+       << evaluate(postfix3.to_string()) << endl
+       << endl;
 
-  // string expression4 = "a+b^c*d";
-  // cout << expression4 << "  --->  ";
-  // cout << infix_to_postfix("a+b^c*d") << endl;
+  char* expression4 = "2^(1+2)-0+4*5";
+  Stack<char> postfix4 = infix_to_postfix(expression4);
+  cout << expression4 << "  --->  " << postfix4 << "  --->  "
+       << evaluate(postfix4.to_string()) << endl
+       << endl;
 
-  // string expression5 = "a+b/(c*d+e)-f^g";
-  // cout << expression5 << "  --->  ";
-  // cout << infix_to_postfix("a+b/(c*d+e)-f^g") << endl;
+  char* expression5 = "1+2^3*4";
+  Stack<char> postfix5 = infix_to_postfix(expression5);
+  cout << expression5 << "  --->  " << postfix5 << "  --->  "
+       << evaluate(postfix5.to_string()) << endl
+       << endl;
 
-  // string expression6 = "(a+b)+(c*d^(e-f/(g^h)))";
-  // cout << expression6 << "  --->  ";
-  // cout << infix_to_postfix("(a+b)+(c*d^(e-f/(g^h)))") << endl;
+  char* expression6 = "1+2/(3*4+5)-6^2";
+  Stack<char> postfix6 = infix_to_postfix(expression6);
+  cout << expression6 << "  --->  " << postfix6 << "  --->  "
+       << evaluate(postfix6.to_string()) << endl
+       << endl;
 
-  // cout << '3' - '0';
+  char* expression7 = "(1+2)+(3*4^(5-2/(3^2)))";
+  Stack<char> postfix7 = infix_to_postfix(expression7);
+  cout << expression7 << "  --->  " << postfix7 << "  --->  "
+       << evaluate(postfix7.to_string()) << endl
+       << endl;
 
   return 0;
 }
