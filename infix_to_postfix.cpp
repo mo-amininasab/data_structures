@@ -194,4 +194,22 @@ Stack<char> infix_to_postfix(const string expression) {
   return result;
 }
 
-int main() { cout << infix_to_postfix("A^(B+C)-A/D*E").get_str() << endl; }
+int main() {
+  string expression1 = "(a+b)*(c+d)";
+  cout << expression1 << "  --->  ";
+  cout << infix_to_postfix("(a+b)*(c+d)").get_str() << endl;
+
+  string expression2 = "a+(b*c^d)^(e-f)/g";
+  cout << expression2 << "  --->  ";
+  cout << infix_to_postfix("a+(b*c^d)^(e-f)/g").get_str() << endl;
+
+  string expression3 = "a^(b+c)-a/d*e";
+  cout << expression3 << "  --->  ";
+  cout << infix_to_postfix("a^(b+c)-a/d*e").get_str() << endl;
+
+  string expression4 = "a+b^c*d";
+  cout << expression4 << "  --->  ";
+  cout << infix_to_postfix("a+b^c*d").get_str() << endl;
+
+  return 0;
+}
