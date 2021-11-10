@@ -4,7 +4,7 @@
 // ************************************
 
 #include <iostream>
-#include <string>
+#include <cstring>
 using namespace std;
 
 template <class T>
@@ -70,20 +70,6 @@ class Stack {
     return stack_ptr[top];
   }
 
-  // string get_str() const {
-  //   string str = "";
-  //   for (int i = 0; i <= top; i++) {
-  //     char item = stack_ptr[i];
-  //     if (item == NULL) {
-  //       break;
-  //     }
-  //     str += item;
-  //   }
-  //   return str;
-  // }
-
-  // int get_size() const { return top; }
-
   bool is_empty() const { return (top == -1); }
   bool is_full() const { return top == capacity - 1; }
 
@@ -113,10 +99,10 @@ bool is_operand(char ch) {
   return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
 }
 
-Stack<char> infix_to_postfix(const string expression) {
-  int length = expression.length();
+Stack<char> infix_to_postfix(const char* expression) {
+  int length = strlen(expression);
   Stack<char> operators(length);
-  Stack<char> result(length + 5); // +5 just to be safe.
+  Stack<char> result(length + 5);  // +5 just to be safe
 
   for (int i = 0; i < length; i++) {
     if (is_operand(expression[i])) {  // if operand
@@ -130,18 +116,18 @@ Stack<char> infix_to_postfix(const string expression) {
         result.push(operators.pop());
       }
 
-      operators.pop();
+      operators.pop();  // pop '('
 
     } else {  // if operator
       while (!operators.is_empty() &&
              prec(expression[i]) <= prec(operators.peak())) {
         result.push(operators.pop());
       }
-
+      
       operators.push(expression[i]);
     }
   }
-  // pop all the operators.
+  // pop all remaining operators
   while (!operators.is_empty()) {
     result.push(operators.pop());
   }
@@ -169,6 +155,10 @@ int main() {
   string expression5 = "a+b/(c*d+e)-f^g";
   cout << expression5 << "  --->  ";
   cout << infix_to_postfix("a+b/(c*d+e)-f^g") << endl;
+
+  string expression6 = "(a+b)+(c*d^(e-f/(g^h)))";
+  cout << expression6 << "  --->  ";
+  cout << infix_to_postfix("(a+b)+(c*d^(e-f/(g^h)))") << endl;
 
   return 0;
 }
