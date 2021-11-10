@@ -1,3 +1,8 @@
+// ************************************
+// *  Name: Mohammad Amini Nasab      *
+// *  Student No.: 39911541054532     *
+// ************************************
+
 #include <iostream>
 #include <string>
 using namespace std;
