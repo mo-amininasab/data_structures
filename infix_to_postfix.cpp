@@ -216,5 +216,9 @@ int main() {
   cout << expression4 << "  --->  ";
   cout << infix_to_postfix("a+b^c*d").get_str() << endl;
 
+  string expression5 = "a+b/(c*d+e)-f^g";
+  cout << expression5 << "  --->  ";
+  cout << infix_to_postfix("a+b/(c*d+e)-f^g").get_str() << endl;
+
   return 0;
 }
