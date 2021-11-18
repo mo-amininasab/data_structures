@@ -1,4 +1,9 @@
 # %%
+# ************************************
+# *  Name: Mohammad Amini Nasab      *
+# *  Student No.: 39911541054532     *
+# ************************************
+
 class Stack:
   def __init__(self):
     self.items = []

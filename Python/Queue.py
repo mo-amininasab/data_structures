@@ -1,4 +1,9 @@
 # %%
+# ************************************
+# *  Name: Mohammad Amini Nasab      *
+# *  Student No.: 39911541054532     *
+# ************************************
+
 class Queue:
   def __init__(self):
     self.items = []
