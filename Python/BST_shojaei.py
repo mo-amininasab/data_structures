@@ -69,6 +69,20 @@ class BinarySearchTree:
 
     return self.count_leaf(current.left) + self.count_leaf(current.right)
 
+  def count_depth(self, node):
+    current = node
+
+    if current == None:
+      return 0
+
+    left_depth = self.count_depth(current.left)
+    right_depth = self.count_depth(current.right)
+
+    if left_depth > right_depth:
+      return left_depth + 1
+    else:
+      return right_depth + 1
+
   def contains(self, data):
     current = self.root
     while True:
@@ -94,7 +108,7 @@ def main():
   bst.insert(6)
 
   # print(bst.count_node(bst.root))
-  print(bst.count_leaf(bst.root))
+  # print(bst.count_leaf(bst.root))
   pass
 
 
