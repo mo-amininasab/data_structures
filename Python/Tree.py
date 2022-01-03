@@ -13,9 +13,10 @@ class Node:
 
 
 class BinarySearchTree:
-  def __init__(self, data=None):
+  def __init__(self, data):
     new_node = Node(data)
     self.root = new_node
+    self.count = 1
 
   def insert(self, data):
     new_node = Node(data)
@@ -39,6 +40,14 @@ class BinarySearchTree:
           current.right = new_node
           return True
         current = current.right
+  
+  def inorder_traversal(self, node):
+    if node == None:
+      return None
+
+    self.inorder_traversal(node.left)
+    self.count += 1
+    self.inorder_traversal(node.right)
 
   def contains(self, data):
     current = self.root
@@ -52,19 +61,22 @@ class BinarySearchTree:
           return False
         current = current.right
       else:
-        return True
+        return current
+
+  
 
 
 def main():
-  my_tree = BinarySearchTree()
+  my_tree = BinarySearchTree(4)
   my_tree.insert(2)
   my_tree.insert(1)
   my_tree.insert(3)
 
   print(my_tree.root.data)
-  print(my_tree.root.left.data)
-  print(my_tree.root.right.data)
-  print(my_tree.contains(-2))
+  # print(my_tree.root.left.data)
+  # print(my_tree.root.right.data)
+  my_tree.inorder_traversal(my_tree.root)
+  print(my_tree.count)
 
 
 if __name__ == '__main__':
