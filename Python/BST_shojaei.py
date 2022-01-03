@@ -4,12 +4,6 @@
 # *  Student No.: 39911541054532     *
 # ************************************
 
-# BST
-# count_node
-# count_leaf
-# depth
-# search
-
 class Node:
   def __init__(self, data):
     self.data = data
@@ -51,7 +45,7 @@ class BinarySearchTree:
 
     if current == None:
       return 0
-    
+
     self.count_node(current.left)
     self.count += 1
     self.count_node(current.right)
@@ -83,7 +77,7 @@ class BinarySearchTree:
     else:
       return right_depth + 1
 
-  def contains(self, data):
+  def search(self, data):
     current = self.root
     while True:
       if data < current.data:
@@ -98,8 +92,6 @@ class BinarySearchTree:
         return current
 
 
-
-
 def main():
   bst = BinarySearchTree(10)
   bst.insert(5)
@@ -107,9 +99,10 @@ def main():
   bst.insert(2)
   bst.insert(6)
 
-  # print(bst.count_node(bst.root))
-  # print(bst.count_leaf(bst.root))
-  pass
+  print("Nodes:", bst.count_node(bst.root))
+  print("Leaf:", bst.count_leaf(bst.root))
+  print("Depth:", bst.count_depth(bst.root))
+  print("Search Node 5:", bst.search(5))
 
 
 if __name__ == '__main__':
