@@ -113,6 +113,51 @@ class BinarySearchTree:
 
     return current
 
+  def delete(self, data):
+    current = self.root
+    parent = None
+    while True:
+      if data < current.data:
+        parent = current
+        current = current.left
+      elif data > current.data:
+        parent = current
+        current = current.right
+      else:
+        break
+
+    if current == None:
+      return False
+
+    # if current has no children
+    if current.left == None and current.right == None:
+      if parent.left == current:
+        parent.left = None
+      else:
+        parent.right = None
+      return True
+
+    # if current has one child
+    if current.left != None and current.right == None:
+      if parent.left == current:
+        parent.left = current.left
+      else:
+        parent.right = current.left
+      return True
+
+    # if current has one child
+    if current.left == None and current.right != None:
+      if parent.left == current:
+        parent.left = current.right
+      else:
+        parent.right = current.right
+      return True
+
+    # if current has two children
+    if current.left != None and current.right != None:
+      min_node = self.find_min(current.right)
+      current.data = min_node.data
+      self.delete(min_node.data)
 
 def main():
   bst = BinarySearchTree(10)
