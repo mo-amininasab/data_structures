@@ -69,16 +69,19 @@ class BinarySearchTree:
 
     queue = []
     queue.append(node)
+    list_of_nodes = []
 
     while len(queue) > 0:
       current = queue.pop(0)
-      print(current.data)
+      # print(current.data)
+      list_of_nodes.append(current.data)
 
       if current.left != None:
         queue.append(current.left)
       if current.right != None:
         queue.append(current.right)
 
+    return list_of_nodes
 
 def main():
   my_tree = BinarySearchTree(4)
@@ -92,7 +95,7 @@ def main():
   my_tree.inorder_traversal(my_tree.root)
   print(my_tree.count)
   print('Level Order:')
-  my_tree.level_order_traversal(my_tree.root)
+  print(my_tree.level_order_traversal(my_tree.root))
 
 
 if __name__ == '__main__':
