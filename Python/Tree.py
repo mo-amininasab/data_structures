@@ -62,8 +62,22 @@ class BinarySearchTree:
         current = current.right
       else:
         return current
-
   
+  def level_order_traversal(self, node):
+    if node == None:
+      return None
+
+    queue = []
+    queue.append(node)
+
+    while len(queue) > 0:
+      current = queue.pop(0)
+      print(current.data)
+
+      if current.left != None:
+        queue.append(current.left)
+      if current.right != None:
+        queue.append(current.right)
 
 
 def main():
@@ -77,6 +91,8 @@ def main():
   # print(my_tree.root.right.data)
   my_tree.inorder_traversal(my_tree.root)
   print(my_tree.count)
+  print('Level Order:')
+  my_tree.level_order_traversal(my_tree.root)
 
 
 if __name__ == '__main__':
