@@ -90,6 +90,28 @@ class BinarySearchTree:
         current = current.right
       else:
         return current
+  
+  def find_min(self, node):
+    current = node
+
+    if current == None:
+      return None
+
+    while current.left != None:
+      current = current.left
+
+    return current
+
+  def find_max(self, node):
+    current = node
+
+    if current == None:
+      return None
+
+    while current.right != None:
+      current = current.right
+
+    return current
 
 
 def main():
